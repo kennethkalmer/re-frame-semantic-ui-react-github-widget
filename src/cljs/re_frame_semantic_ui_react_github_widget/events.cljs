@@ -24,6 +24,7 @@
                       (dissoc :error))
       :http-xhrio {:method          :get
                    :uri             (str "https://api.github.com/users/" user "/repos")
+                   :params          {:sort :pushed}
                    :timeout         5000
                    :response-format (ajax/json-response-format {:keywords? true})
                    :on-success      [:repos-loaded]

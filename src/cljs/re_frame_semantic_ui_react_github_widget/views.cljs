@@ -56,6 +56,9 @@
   "Render a dropdown component for selecting a repo"
   []
   (let [repos     (re-frame/subscribe [:repos])
+        selected  (re-frame/subscribe [:selected-repo])
+        loading   (re-frame/subscribe [:loading])
+        dropdown  (component "Dropdown")
         options   (reaction
                    (map (fn [repo]
                           {:key         (:id repo)
@@ -63,7 +66,6 @@
                            :text        (:name repo)
                            :description (:description repo)})
                         @repos))
-        dropdown  (component "Dropdown")
         on-change (fn [_ data]
                     (let [selected (js->clj (.-value data))]
                       (re-frame/dispatch [:repo-selected selected])))]
@@ -75,6 +77,8 @@
         :selection   true
         :search      true
         :options     @options
+        :loading     @loading
+        :value       (or (:id @selected) "")
         :onChange    on-change}])))
 
 (defn repo-tree []
@@ -83,6 +87,7 @@
         truncated?  (re-frame/subscribe [:tree-truncated])
         files       (re-frame/subscribe [:sorted-tree])
         loading     (re-frame/subscribe [:loading])
+        ;; Pick all the components we'll use
         table       (component "Table")
         header      (component "Table" "Header")
         body        (component "Table" "Body")
@@ -98,7 +103,6 @@
          [:> header
           [:> row
            [:> header-cell
-            ;; {:colSpan 3}
             (:name @repo)]]]
 
          [:> body
@@ -111,7 +115,7 @@
                "Loading repo tree"]]]
 
             (for [obj @files]
-              ^{:key (:path obj)}
+              ^{:key (:path obj)} ;; unique key for reagent/react
               [:> row
                [:> cell
                 {:collapsing true}
@@ -120,6 +124,7 @@
                  [:> icon {:name (if (= "blob" (:type obj)) "file outline" "folder")}]
                  (:path obj)]]]))
 
+          ;; The API might have truncated the tree...
           (if @truncated?
             [:> row
              [:> cell
@@ -132,11 +137,16 @@
         error     (re-frame/subscribe [:error])
         repos?    (re-frame/subscribe [:has-repos])
         selected? (re-frame/subscribe [:has-selected-repo])
+        ;; Adhoc component for the header
         header    (component "Header")]
     (fn []
       [:> container
        [:> segment
-        [:> header {:as "h1"} "GitHub Tree Widget"]
+        ;;  Sample of using the semantic-ui-react shorthand
+        [:> header {:as        "h1"
+                    :subheader "A sample widget using semantic-ui-react with re-frame"
+                    :content   "GitHub Tree Widget"
+                    :icon      "github"}]
         [:> message "To get started, enter a GitHub username below"]
         (if @error
           [:> message
@@ -145,10 +155,15 @@
            @error])
         [username-field]
 
-        (if repos?
+        (if @repos?
           (list
-           ^{:key (rand)} [:> message "Choose a repo"]
+           ^{:key (rand)} [:> message
+                           [:p
+                            "Choose a repo. "
+                            [:i
+                             "(List might be incomplete, I'm only showing "
+                             "30 repos as returned by the GitHub API)"]]]
            ^{:key (rand)} [repo-dropdown]))
 
-        (if selected?
+        (if @selected?
           [repo-tree])]])))

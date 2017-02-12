@@ -50,8 +50,8 @@
  (fn [_]
    [(re-frame/subscribe [:repos])
     (re-frame/subscribe [:selected-repo])])
- (fn [[repos selected-repo]]
-   (selected-repo repos selected-repo)))
+ (fn [[repos selected]]
+   (selected-repo repos selected)))
 
 (re-frame/reg-sub
  :has-selected-repo

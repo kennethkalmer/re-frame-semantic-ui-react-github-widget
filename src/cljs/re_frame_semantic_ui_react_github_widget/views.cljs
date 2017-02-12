@@ -19,15 +19,15 @@
     (goog.object/get semantic-ui k)))
 
 ;; Common references
-(def container (component "Container"))
-(def segment (component "Segment"))
-(def dimmer (component "Dimmer"))
-(def loader (component "Loader"))
-(def message (component "Message"))
+(def container      (component "Container"))
+(def segment        (component "Segment"))
+(def dimmer         (component "Dimmer"))
+(def loader         (component "Loader"))
+(def message        (component "Message"))
 (def message-header (component "Message" "Header"))
-(def input (component "Input"))
-(def button (component "Button"))
-(def icon (component "Icon"))
+(def input          (component "Input"))
+(def button         (component "Button"))
+(def icon           (component "Icon"))
 
 (defn username-field
   "Render an input field for accepting a GitHub username"

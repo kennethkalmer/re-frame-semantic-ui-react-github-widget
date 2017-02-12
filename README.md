@@ -1,6 +1,8 @@
 # re-frame-semantic-ui-react-github-widget
 
-A [re-frame](https://github.com/Day8/re-frame) application designed to ... well, that part is up to you.
+A [re-frame](https://github.com/Day8/re-frame) application designed to show how to use [semantic-ui-react](http://react.semantic-ui.com/) from [cljsjs](http://cljsjs.github.io).
+
+The interesting parts are in `src/cljs/views.cljs`.
 
 ## Development Mode
 

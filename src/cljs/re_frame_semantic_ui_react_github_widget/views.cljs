@@ -82,7 +82,7 @@
         :onChange    on-change}])))
 
 (defn repo-tree []
-  (let [repo        (re-frame/subscribe [:repo])
+  (let [repo        (re-frame/subscribe [:selected-repo])
         has-tree?   (re-frame/subscribe [:has-tree])
         truncated?  (re-frame/subscribe [:tree-truncated])
         files       (re-frame/subscribe [:sorted-tree])
@@ -119,7 +119,7 @@
               [:> row
                [:> cell
                 {:collapsing true}
-                [:a {:href   (:url obj)
+                [:a {:href   (:html_url obj)
                      :target "_blank"}
                  [:> icon {:name (if (= "blob" (:type obj)) "file outline" "folder")}]
                  (:path obj)]]]))
@@ -128,7 +128,7 @@
           (if @truncated?
             [:> row
              [:> cell
-              [:a {:href   (:url repo)
+              [:a {:href   (:html_url repo)
                    :target "_blank"}
                "Browse full repo"]]])]]))))
 

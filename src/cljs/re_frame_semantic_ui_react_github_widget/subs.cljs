@@ -46,14 +46,6 @@
    (:selected-repo db)))
 
 (re-frame/reg-sub
- :repo
- (fn [_]
-   [(re-frame/subscribe [:repos])
-    (re-frame/subscribe [:selected-repo])])
- (fn [[repos selected]]
-   (selected-repo repos selected)))
-
-(re-frame/reg-sub
  :has-selected-repo
  (fn [_]
    (re-frame/subscribe [:selected-repo]))
